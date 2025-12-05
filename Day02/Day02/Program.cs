@@ -1,26 +1,35 @@
-﻿
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using Day02;
 
-List<(long start, long end)> pairs = PopulateData("data01.txt");
+long count = 0;
+
+List<(long start, long end)> pairs = PopulateData("data00.txt");
 
 foreach (var pair in pairs)
 {
     Console.Write($"Start: {pair.start}, End: {pair.end}");
 
     Stopwatch sw = Stopwatch.StartNew();
-    ProcessPair(pair);
+
+    count += ProcessPair(pair);
     sw.Stop();
 
     Console.WriteLine($" - Elapsed: {sw.ElapsedMilliseconds} ms");
 }
 
-static void ProcessPair((long start, long end) pair)
+Console.WriteLine($"Total Sum of Palindromes: {count}");
+
+static long ProcessPair((long start, long end) pair)
 {
+    long count = 0;
     for (long i = pair.start; i <= pair.end; i++)
     {
-        // Processing logic here
+        if (i.IsPalindrome())
+        {
+            count += i;
+        }
     }
+    return count;
 }
 
 static List<(long start, long end)> PopulateData(string fn)
