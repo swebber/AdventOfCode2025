@@ -12,7 +12,7 @@ foreach (var pair in pairs)
 
     Stopwatch sw = Stopwatch.StartNew();
     (long count, long multiCount) = ProcessPair(pair);
-    
+
     totalCount += count;
     totalMultiCount += multiCount;
 
@@ -52,11 +52,11 @@ static List<(long start, long end)> PopulateData(string fn)
     var line = lines[0];
 
     var pairs = line.Split(',');
-    foreach (var pair in pairs )
+    foreach (var pair in pairs)
     {
         var parts = pair.Split('-');
 
-        result.Add( (long.Parse(parts[0]), long.Parse(parts[1])));
+        result.Add((long.Parse(parts[0]), long.Parse(parts[1])));
     }
 
     return result;
