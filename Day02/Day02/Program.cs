@@ -1,35 +1,45 @@
 ﻿using System.Diagnostics;
 using Day02;
 
-long count = 0;
+long totalCount = 0;
+long totalMultiCount = 0;
 
 List<(long start, long end)> pairs = PopulateData("data01.txt");
 
 foreach (var pair in pairs)
 {
-    Console.Write($"Start: {pair.start}, End: {pair.end}");
+    Console.WriteLine($"Start: {pair.start}, End: {pair.end}");
 
     Stopwatch sw = Stopwatch.StartNew();
+    (long count, long multiCount) = ProcessPair(pair);
+    
+    totalCount += count;
+    totalMultiCount += multiCount;
 
-    count += ProcessPair(pair);
     sw.Stop();
-
-    Console.WriteLine($" - Elapsed: {sw.ElapsedMilliseconds} ms");
 }
 
-Console.WriteLine($"Total Sum of Palindromes: {count}");
+Console.WriteLine($"Total Sum of matching patterns: {totalCount}");
+Console.WriteLine($"Total Sum of multi patterns: {totalMultiCount}");
 
-static long ProcessPair((long start, long end) pair)
+static (long count, long multiCount) ProcessPair((long start, long end) pair)
 {
     long count = 0;
+    long multiCount = 0;
+
     for (long i = pair.start; i <= pair.end; i++)
     {
         if (i.IsPattern())
         {
             count += i;
         }
+
+        if (i.IsMultiPattern())
+        {
+            multiCount += i;
+        }
     }
-    return count;
+    return (count, multiCount);
 }
 
 static List<(long start, long end)> PopulateData(string fn)
