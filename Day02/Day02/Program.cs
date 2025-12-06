@@ -3,7 +3,7 @@ using Day02;
 
 long count = 0;
 
-List<(long start, long end)> pairs = PopulateData("data00.txt");
+List<(long start, long end)> pairs = PopulateData("data01.txt");
 
 foreach (var pair in pairs)
 {
@@ -24,7 +24,7 @@ static long ProcessPair((long start, long end) pair)
     long count = 0;
     for (long i = pair.start; i <= pair.end; i++)
     {
-        if (i.IsPalindrome())
+        if (i.IsPattern())
         {
             count += i;
         }
