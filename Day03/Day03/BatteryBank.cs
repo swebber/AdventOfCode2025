@@ -6,6 +6,8 @@ namespace Day03;
 
 internal class BatteryBank
 {
+    private const int BankLenth = 12;
+
     private string _sequence = string.Empty;
 
     public BatteryBank(string sequence)
@@ -13,10 +15,29 @@ internal class BatteryBank
         _sequence = sequence;
     }
 
+    public long Joltage12()
+    {
+        string result = string.Empty;
+        int remainderRequired = BankLenth - 1;
+        string sequence = _sequence;
+
+        while (remainderRequired >= 0)
+        {
+            int foo = sequence.Length - remainderRequired;
+            string bar = sequence[..foo];
+            (int value, int index) = MaxDigitAndIndex(bar);
+
+            result += value.ToString();
+            sequence = sequence[(index + 1)..];
+            --remainderRequired;
+        }
+
+        return long.Parse(result);
+    }
+
     public int Joltage()
     {
         int result = MaxLeadingDigitWithRemainder();
-        Console.WriteLine($"Sequence {_sequence}, Joltage {result}");
         return result;
     }
 
@@ -30,6 +51,22 @@ internal class BatteryBank
                 max = digit;
         }
         return max;
+    }
+
+    private (int maxDigit, int index) MaxDigitAndIndex(string sequence)
+    {
+        int max = 0;
+        int maxIndex = -1;
+        for (int i = 0; i < sequence.Length; i++)
+        {
+            int digit = sequence[i] - '0';
+            if (digit > max)
+            {
+                max = digit;
+                maxIndex = i;
+            }
+        }
+        return (max, maxIndex);
     }
 
     private int MaxLeadingDigitWithRemainder()
