@@ -5,24 +5,49 @@ ProcessInput();
 
 void ProcessInput()
 {
-    int accesable = 0;
+    int accesableTotal = 0;
+    int accessablePass = -1;
 
     int rows = _grid.GetLength(0);
     int cols = _grid.GetLength(1);
-    for (int i = 0; i < rows; i++)
+
+    while (accessablePass != 0)
     {
-        for (int j = 0; j < cols; j++)
+        accessablePass = 0;
+
+        for (int i = 0; i < rows; i++)
         {
-            int neighbors = NeighborCount(i, j);
-            
-            if (neighbors < 4 && _grid[i, j] == '@')
+            for (int j = 0; j < cols; j++)
             {
-                accesable++;
+                int neighbors = NeighborCount(i, j);
+
+                if (neighbors < 4 && _grid[i, j] == '@')
+                {
+                    _grid[i, j] = 'x';
+                    accessablePass++;
+                }
+            }
+        }
+
+        Console.WriteLine($"Accessable this pass: {accessablePass}");
+        accesableTotal += accessablePass;
+
+        if (accessablePass != 0)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (_grid[i, j] == 'x')
+                    {
+                        _grid[i, j] = '.';
+                    }
+                }
             }
         }
     }
 
-    Console.WriteLine($"Accesable rolls: {accesable}");
+    Console.WriteLine($"Accesable rolls: {accesableTotal}");
 }
 
 int NeighborCount(int i, int j) =>
@@ -42,7 +67,7 @@ int IsOccupied(int i, int j)
         return 0;
     }
 
-    return _grid[i, j] == '@' ? 1 : 0;
+    return (_grid[i, j] == '@' || _grid[i, j] == 'x') ? 1 : 0;
 }
 
 void ReadInput(string fn)
